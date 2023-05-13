@@ -1,0 +1,129 @@
+<html>
+    <script>
+
+        class Lancamento {
+
+            constructor (categoria, tipo, valor) {
+                if(categoria === "") throw new Error("Lançamento inválido: Categoria é obrigatória!")
+
+                if(tipo !== "receita" && tipo !== "despesa") throw new Error("Lançamento inválido: Tipo deve ser receita ou despesa")
+
+                if(valor <= 0) throw new Error ("Lançamento inválido: Valor deve ser maior que zero.")
+
+                this.categoria = categoria,
+                this.tipo = tipo,
+                this.valor = valor
+            }
+        }
+
+        function calcularRendimentos(saldo) {
+            return arredondar(saldo *= 0.005)
+        }
+
+        function calcularJuros(saldo) {
+            return arredondar(saldo *= 0.1)
+        }
+
+        function calcularPorcentagem(lancamentos, total) {
+            let lista = []
+
+            for (lancamento of lancamentos) {
+                if (lancamento.tipo === "despesa") {
+                    let porcentagem = arredondar((lancamento.valor / total) * 100)
+                    lista.push({ categoria: lancamento.categoria, porcentagem })
+                }
+            }
+
+            return lista
+        }
+
+        function calcularSaldo(saldoInicial, lancamentos) {
+            let balancoDoMes = {
+                saldoInicial,
+                saldo: 0,
+                rendimentos: 0,
+                juros: 0,
+                receitas: 0,
+                despesas: 0,
+                proporcaoDeGastos: []
+            }
+
+            balancoDoMes.saldo = saldoInicial
+
+            for (lancamento of lancamentos) {
+                if (lancamento.tipo === "receita") {
+                    balancoDoMes.saldo += lancamento.valor
+                    balancoDoMes.receitas += lancamento.valor
+                }
+                if (lancamento.tipo === "despesa") {
+                    balancoDoMes.saldo -= lancamento.valor
+                    balancoDoMes.despesas += lancamento.valor
+                } 
+            }
+
+            if (balancoDoMes.saldo < 0) {
+                balancoDoMes.juros = calcularJuros(balancoDoMes.saldo)
+                balancoDoMes.saldo = arredondar(balancoDoMes.saldo - balancoDoMes.juros)
+            } else {
+                balancoDoMes.rendimentos = calcularRendimentos(balancoDoMes.saldo)
+                balancoDoMes.saldo = arredondar(balancoDoMes.saldo + balancoDoMes.rendimentos)
+            }
+
+            balancoDoMes.proporcaoDeGastos = calcularPorcentagem(lancamentos, balancoDoMes.despesas)
+            
+            return balancoDoMes
+        }
+
+        function arredondar(valor) {
+            return Math.round(valor * 100) / 100
+        }
+
+        //janeiro
+        lancamentosJaneiro = [
+            new Lancamento ("Salário", "receita", 3000),
+            new Lancamento ("Aluguel", "despesa", 1000),
+            new Lancamento ("Conta de luz", "despesa", 200),
+            new Lancamento ("Conta de água", "despesa", 100),
+            new Lancamento ("Internet", "despesa", 100),
+            new Lancamento ("Transporte", "despesa", 300),
+            new Lancamento ("Lazer", "despesa", 300),
+            new Lancamento ("Alimentação", "despesa", 500)
+        ]
+
+        let saldoInicial = 0
+        let saldoJaneiro = calcularSaldo(saldoInicial, lancamentosJaneiro)
+
+        console.log(saldoJaneiro)
+
+
+        //fevereiro
+        lancamentosFevereiro = [
+            new Lancamento ("Salário", "receita", 3000),
+            new Lancamento ("Aluguel", "despesa", 1200),
+            new Lancamento ("Conta de luz", "despesa", 250),
+            new Lancamento ("Conta de água", "despesa", 100),
+            new Lancamento ("Internet", "despesa", 100),
+            new Lancamento ("Transporte", "despesa", 500),
+            new Lancamento ("Alimentação", "despesa", 1000)
+        ]
+
+        let saldoFevereiro = calcularSaldo(saldoJaneiro.saldo, lancamentosFevereiro)
+        console.log(saldoFevereiro)
+
+        // março
+        lancamentosMarco = [
+            new Lancamento ("Salário", "receita", 4000),
+            new Lancamento ("Aluguel", "despesa", 1200),
+            new Lancamento ("Conta de luz", "despesa", 200),
+            new Lancamento ("Conta de água", "despesa", 100),
+            new Lancamento ("Internet", "despesa", 200),
+            new Lancamento ("Transporte", "despesa", 500),
+            new Lancamento ("Lazer", "despesa", 800),
+            new Lancamento ("Alimentação", "despesa", 1000)
+        ]      
+
+        let saldoMarco = calcularSaldo(saldoFevereiro.saldo, lancamentosMarco)
+        console.log(saldoMarco)
+
+    </script>
+</html>
