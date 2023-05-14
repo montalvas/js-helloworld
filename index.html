@@ -1,59 +1,19 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS</title>
+</head>
+<body>
+    <script src="utils.js"></script>
     <script src="lancamento.js"></script>
     <script src="mes.js"></script>
+    <script src="main.js"></script>
+    <script src="test.js"></script>
     <script>
-
-        function arredondar(valor) {
-            return Math.round(valor * 100) / 100;
-        }
-
-        //janeiro
-        const saldoInicial = 0;
-
-        const janeiro = new Mes("Janeiro", saldoInicial);
-
-        janeiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
-        janeiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1000));
-        janeiro.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
-        janeiro.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
-        janeiro.adicionarLancamento(new Lancamento ("Internet", "despesa", 100));
-        janeiro.adicionarLancamento(new Lancamento ("Transporte", "despesa", 300));
-        janeiro.adicionarLancamento(new Lancamento ("Lazer", "despesa", 300));
-        janeiro.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 500));
-
-        janeiro.calcularSaldo();
-        console.log(janeiro.balancoDoMes.saldo === 502.5);
-
-
-        // fevereiro
-        fevereiro = new Mes("Fevereiro", janeiro.balancoDoMes.saldo);
-
-        fevereiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
-        fevereiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
-        fevereiro.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 250));
-        fevereiro.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
-        fevereiro.adicionarLancamento(new Lancamento ("Internet", "despesa", 100));
-        fevereiro.adicionarLancamento(new Lancamento ("Transporte", "despesa", 500));
-        fevereiro.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 1000));
-
-        fevereiro.calcularSaldo();
-        console.log(fevereiro.balancoDoMes.saldo === 354.26);
-
-        // março
-        const marco = new Mes("Março", fevereiro.balancoDoMes.saldo);
-        marco.adicionarLancamento(new Lancamento ("Salário", "receita", 4000));
-        marco.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
-        marco.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
-        marco.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
-        marco.adicionarLancamento(new Lancamento ("Internet", "despesa", 200));
-        marco.adicionarLancamento(new Lancamento ("Transporte", "despesa", 500));
-        marco.adicionarLancamento(new Lancamento ("Lazer", "despesa", 800));
-        marco.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 1000));
-
-        marco.calcularSaldo();
-        console.log(marco.balancoDoMes.saldo === 356.03)
-
-        console.log(janeiro);
-
+        
     </script>
+</body>
 </html>

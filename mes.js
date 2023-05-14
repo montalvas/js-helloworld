@@ -40,23 +40,9 @@ class Mes {
             }
         }
 
-        if (this.balancoDoMes.saldo > 0) {
-            this.balancoDoMes.rendimentos = this.calcularRendimentos(this.balancoDoMes.saldo);
-            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo + this.balancoDoMes.rendimentos);
-        } else {
-            this.balancoDoMes.juros = this.calcularJuros(this.balancoDoMes.saldo);
-            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo - this.balancoDoMes.juros);
-        }
-
-        this.proporcaoDeGastos = this.calcularPorcentagem();
-    }
-
-    calcularRendimentos(saldo) {
-        return arredondar(saldo *= 0.005);
-    }
-
-    calcularJuros(saldo) {
-        return arredondar(saldo *= 0.1);
+        this.calcularPorcentagem();
+        this.apurarRendimentos();
+        this.apurarJuros();
     }
 
     calcularPorcentagem() {
@@ -69,6 +55,28 @@ class Mes {
             }
         }
 
-        return lista;
+        this.balancoDoMes.proporcaoDeGastos = lista;
+    }
+
+    apurarRendimentos() {
+        if (this.balancoDoMes.saldo > 0) {
+            this.balancoDoMes.rendimentos = this.calcularRendimentos(this.balancoDoMes.saldo);
+            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo + this.balancoDoMes.rendimentos);
+        }
+    }
+
+    calcularRendimentos(saldo) {
+        return arredondar(saldo *= 0.005);
+    }
+
+    apurarJuros() {
+        if (this.balancoDoMes.saldo < 0) {
+            this.balancoDoMes.juros = this.calcularJuros(this.balancoDoMes.saldo);
+            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo - this.balancoDoMes.juros);
+        }
+    }
+
+    calcularJuros(saldo) {
+        return arredondar(saldo *= 0.1);
     }
 }
