@@ -4,41 +4,97 @@
         class Lancamento {
 
             constructor (categoria, tipo, valor) {
-                if(categoria === "") throw new Error("Lançamento inválido: Categoria é obrigatória!")
+                if(categoria === "") throw new Error("Lançamento inválido: Categoria é obrigatória!");
 
-                if(tipo !== "receita" && tipo !== "despesa") throw new Error("Lançamento inválido: Tipo deve ser receita ou despesa")
+                if(tipo !== "receita" && tipo !== "despesa") throw new Error("Lançamento inválido: Tipo deve ser receita ou despesa");
 
-                if(valor <= 0) throw new Error ("Lançamento inválido: Valor deve ser maior que zero.")
+                if(valor <= 0) throw new Error ("Lançamento inválido: Valor deve ser maior que zero.");
 
-                this.categoria = categoria,
-                this.tipo = tipo,
-                this.valor = valor
+                this.categoria = categoria;
+                this.tipo = tipo;
+                this.valor = valor;
+            }
+        }
+
+        class Mes {
+
+            constructor(nome, saldoInicial) {
+                if (nome === "") throw new Error ("Mês inválido: nome do mês é obrigatório");
+
+                const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+                const mesValido = meses.find(mes => mes === nome.toLowerCase());
+                if (mesValido === undefined) throw new Error("Mês inválido: nome do mês não existe!");
+
+                this.nome = nome;
+                this.saldoInicial = saldoInicial;
+                this.balancoDoMes = {
+                    saldoInicial,
+                    saldo: 0,
+                    rendimentos: 0,
+                    juros: 0,
+                    receitas: 0,
+                    despesas: 0,
+                    proporcaoDeGastos: []
+                }
+                this.lancamentos = [];
+
+            }
+
+            adicionarLancamento(lancamento) {
+                this.lancamentos.push(lancamento)
+            }
+
+            calcularSaldo() {
+                for (const lancamento of this.lancamentos) {
+                    if (lancamento.tipo === "receita") {
+                        this.balancoDoMes.saldo += lancamento.valor;
+                        this.balancoDoMes.receitas += lancamento.valor;
+                    }
+                    if (lancamento.tipo === "despesa") {
+                        this.balancoDoMes.saldo -= lancamento.valor;
+                        this.balancoDoMes.despesas += lancamento.valor
+                    }
+                }
+
+                if (this.balancoDoMes.saldo > 0) {
+                    this.balancoDoMes.rendimentos = calcularRendimentos(this.balancoDoMes.saldo);
+                    this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo + this.balancoDoMes.rendimentos);
+                } else {
+                    this.balancoDoMes.juros = calcularJuros(this.balancoDoMes.saldo);
+                    this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo - this.balancoDoMes.juros);
+                }
+
+                this.proporcaoDeGastos = calcularPorcentagem(this.lancamentos, this.balancoDoMes.despesas);
+            }
+
+            mostrarSaldo() {
+                return this.balancoDoMes.saldo;
             }
         }
 
         function calcularRendimentos(saldo) {
-            return arredondar(saldo *= 0.005)
+            return arredondar(saldo *= 0.005);
         }
 
         function calcularJuros(saldo) {
-            return arredondar(saldo *= 0.1)
+            return arredondar(saldo *= 0.1);
         }
 
         function calcularPorcentagem(lancamentos, total) {
-            let lista = []
+            const lista = [];
 
-            for (lancamento of lancamentos) {
+            for (const lancamento of lancamentos) {
                 if (lancamento.tipo === "despesa") {
-                    let porcentagem = arredondar((lancamento.valor / total) * 100)
-                    lista.push({ categoria: lancamento.categoria, porcentagem })
+                    const porcentagem = arredondar((lancamento.valor / total) * 100);
+                    lista.push({ categoria: lancamento.categoria, porcentagem });
                 }
             }
 
-            return lista
+            return lista;
         }
 
         function calcularSaldo(saldoInicial, lancamentos) {
-            let balancoDoMes = {
+            const balancoDoMes = {
                 saldoInicial,
                 saldo: 0,
                 rendimentos: 0,
@@ -48,82 +104,82 @@
                 proporcaoDeGastos: []
             }
 
-            balancoDoMes.saldo = saldoInicial
+            balancoDoMes.saldo = saldoInicial;
 
-            for (lancamento of lancamentos) {
+            for (const lancamento of lancamentos) {
                 if (lancamento.tipo === "receita") {
-                    balancoDoMes.saldo += lancamento.valor
-                    balancoDoMes.receitas += lancamento.valor
+                    balancoDoMes.saldo += lancamento.valor;
+                    balancoDoMes.receitas += lancamento.valor;
                 }
                 if (lancamento.tipo === "despesa") {
-                    balancoDoMes.saldo -= lancamento.valor
-                    balancoDoMes.despesas += lancamento.valor
+                    balancoDoMes.saldo -= lancamento.valor;
+                    balancoDoMes.despesas += lancamento.valor;
                 } 
             }
 
             if (balancoDoMes.saldo < 0) {
-                balancoDoMes.juros = calcularJuros(balancoDoMes.saldo)
-                balancoDoMes.saldo = arredondar(balancoDoMes.saldo - balancoDoMes.juros)
+                balancoDoMes.juros = calcularJuros(balancoDoMes.saldo);
+                balancoDoMes.saldo = arredondar(balancoDoMes.saldo - balancoDoMes.juros);
             } else {
-                balancoDoMes.rendimentos = calcularRendimentos(balancoDoMes.saldo)
-                balancoDoMes.saldo = arredondar(balancoDoMes.saldo + balancoDoMes.rendimentos)
+                balancoDoMes.rendimentos = calcularRendimentos(balancoDoMes.saldo);
+                balancoDoMes.saldo = arredondar(balancoDoMes.saldo + balancoDoMes.rendimentos);
             }
 
-            balancoDoMes.proporcaoDeGastos = calcularPorcentagem(lancamentos, balancoDoMes.despesas)
+            balancoDoMes.proporcaoDeGastos = calcularPorcentagem(lancamentos, balancoDoMes.despesas);
             
-            return balancoDoMes
+            return balancoDoMes;
         }
 
         function arredondar(valor) {
-            return Math.round(valor * 100) / 100
+            return Math.round(valor * 100) / 100;
         }
 
         //janeiro
-        lancamentosJaneiro = [
-            new Lancamento ("Salário", "receita", 3000),
-            new Lancamento ("Aluguel", "despesa", 1000),
-            new Lancamento ("Conta de luz", "despesa", 200),
-            new Lancamento ("Conta de água", "despesa", 100),
-            new Lancamento ("Internet", "despesa", 100),
-            new Lancamento ("Transporte", "despesa", 300),
-            new Lancamento ("Lazer", "despesa", 300),
-            new Lancamento ("Alimentação", "despesa", 500)
-        ]
+        const saldoInicial = 0;
 
-        let saldoInicial = 0
-        let saldoJaneiro = calcularSaldo(saldoInicial, lancamentosJaneiro)
+        const janeiro = new Mes("Janeiro", saldoInicial);
+        janeiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
+        janeiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1000));
+        janeiro.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
+        janeiro.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
+        janeiro.adicionarLancamento(new Lancamento ("Internet", "despesa", 100));
+        janeiro.adicionarLancamento(new Lancamento ("Transporte", "despesa", 300));
+        janeiro.adicionarLancamento(new Lancamento ("Lazer", "despesa", 300));
+        janeiro.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 500));
 
-        console.log(saldoJaneiro)
+        janeiro.calcularSaldo();
+
+        console.log(janeiro.balancoDoMes.saldo === 502.5);
 
 
         //fevereiro
-        lancamentosFevereiro = [
-            new Lancamento ("Salário", "receita", 3000),
-            new Lancamento ("Aluguel", "despesa", 1200),
-            new Lancamento ("Conta de luz", "despesa", 250),
-            new Lancamento ("Conta de água", "despesa", 100),
-            new Lancamento ("Internet", "despesa", 100),
-            new Lancamento ("Transporte", "despesa", 500),
-            new Lancamento ("Alimentação", "despesa", 1000)
-        ]
+        // lancamentosFevereiro = [
+        //     new Lancamento ("Salário", "receita", 3000),
+        //     new Lancamento ("Aluguel", "despesa", 1200),
+        //     new Lancamento ("Conta de luz", "despesa", 250),
+        //     new Lancamento ("Conta de água", "despesa", 100),
+        //     new Lancamento ("Internet", "despesa", 100),
+        //     new Lancamento ("Transporte", "despesa", 500),
+        //     new Lancamento ("Alimentação", "despesa", 1000)
+        // ];
 
-        let saldoFevereiro = calcularSaldo(saldoJaneiro.saldo, lancamentosFevereiro)
-        console.log(saldoFevereiro)
+        // const saldoFevereiro = calcularSaldo(saldoJaneiro.saldo, lancamentosFevereiro);
+        // console.log(saldoFevereiro.saldo === 354.26);
 
-        // março
-        lancamentosMarco = [
-            new Lancamento ("Salário", "receita", 4000),
-            new Lancamento ("Aluguel", "despesa", 1200),
-            new Lancamento ("Conta de luz", "despesa", 200),
-            new Lancamento ("Conta de água", "despesa", 100),
-            new Lancamento ("Internet", "despesa", 200),
-            new Lancamento ("Transporte", "despesa", 500),
-            new Lancamento ("Lazer", "despesa", 800),
-            new Lancamento ("Alimentação", "despesa", 1000)
-        ]      
+        // // março
+        // lancamentosMarco = [
+        //     new Lancamento ("Salário", "receita", 4000),
+        //     new Lancamento ("Aluguel", "despesa", 1200),
+        //     new Lancamento ("Conta de luz", "despesa", 200),
+        //     new Lancamento ("Conta de água", "despesa", 100),
+        //     new Lancamento ("Internet", "despesa", 200),
+        //     new Lancamento ("Transporte", "despesa", 500),
+        //     new Lancamento ("Lazer", "despesa", 800),
+        //     new Lancamento ("Alimentação", "despesa", 1000)
+        // ];      
 
-        let saldoMarco = calcularSaldo(saldoFevereiro.saldo, lancamentosMarco)
-        console.log(saldoMarco)
+        // const saldoMarco = calcularSaldo(saldoFevereiro.saldo, lancamentosMarco);
+        // console.log(saldoMarco.saldo === 356.03)
 
     </script>
 </html>
