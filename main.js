@@ -1,6 +1,5 @@
 // janeiro
-const saldoInicial = 0;
-const janeiro = new Mes("Janeiro", saldoInicial);
+const janeiro = new Mes("Janeiro");
 
 janeiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
 janeiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1000));
@@ -11,10 +10,8 @@ janeiro.adicionarLancamento(new Lancamento ("Transporte", "despesa", 300));
 janeiro.adicionarLancamento(new Lancamento ("Lazer", "despesa", 300));
 janeiro.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 500));
 
-janeiro.calcularSaldo();
-
 // fevereiro
-const fevereiro = new Mes("Fevereiro", janeiro.balancoDoMes.saldo);
+const fevereiro = new Mes("Fevereiro");
 
 fevereiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
 fevereiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
@@ -24,10 +21,8 @@ fevereiro.adicionarLancamento(new Lancamento ("Internet", "despesa", 100));
 fevereiro.adicionarLancamento(new Lancamento ("Transporte", "despesa", 500));
 fevereiro.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 1000));
 
-fevereiro.calcularSaldo();
-
 // março
-const marco = new Mes("Março", fevereiro.balancoDoMes.saldo);
+const marco = new Mes("Março");
 marco.adicionarLancamento(new Lancamento ("Salário", "receita", 4000));
 marco.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
 marco.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
@@ -37,6 +32,14 @@ marco.adicionarLancamento(new Lancamento ("Transporte", "despesa", 500));
 marco.adicionarLancamento(new Lancamento ("Lazer", "despesa", 800));
 marco.adicionarLancamento(new Lancamento ("Alimentação", "despesa", 1000));
 
-marco.calcularSaldo();
+const ano = new Ano();
 
+ano.adicionarMes(janeiro);
+ano.adicionarMes(fevereiro);
+ano.adicionarMes(marco);
+ano.calcularSaldo();
 
+console.log(ano.meses);
+
+janeiro.adicionarLancamento(new Lancamento("escola", "despesa", 250));
+ano.calcularSaldo();

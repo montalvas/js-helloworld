@@ -1,6 +1,6 @@
 class Mes {
 
-    constructor(nome, saldoInicial) {
+    constructor(nome) {
         if (nome === "") throw new Error ("Mês inválido: nome do mês é obrigatório");
 
         const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -8,9 +8,8 @@ class Mes {
         if (mesValido === undefined) throw new Error("Mês inválido: nome do mês não existe!");
 
         this.nome = nome;
-        this.saldoInicial = saldoInicial;
+        this.saldoInicial = 0;
         this.balancoDoMes = {
-            saldoInicial,
             saldo: 0,
             rendimentos: 0,
             juros: 0,
@@ -27,6 +26,7 @@ class Mes {
     }
 
     calcularSaldo() {
+        this.balancoDoMes = {saldo: 0, rendimentos: 0, juros: 0, receitas: 0, despesas: 0, proporcaoDeGastos: []}
         this.balancoDoMes.saldo = this.saldoInicial;
 
         for (const lancamento of this.lancamentos) {
