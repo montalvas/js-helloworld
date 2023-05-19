@@ -39,7 +39,35 @@ ano.adicionarMes(fevereiro);
 ano.adicionarMes(marco);
 ano.calcularSaldo();
 
-console.log(ano.meses);
-
 janeiro.adicionarLancamento(new Lancamento("escola", "despesa", 250));
 ano.calcularSaldo();
+
+function addElement(parent, elementType, text) {
+    const element = document.createElement(elementType);
+    if (text) element.innerText = text;
+    parent.appendChild(element);
+}
+
+function renderizar() {
+    const app = document.getElementById("app");
+    if (app.firstChild) app.firstChild.remove();
+
+    const painel = document.createElement("div");
+    
+    for (mes of ano.meses) {
+        addElement(painel, "h4", mes.nome);
+
+        for (lancamento of mes.lancamentos) {
+            const informacoesLancamento = `${lancamento.tipo} ${lancamento.categoria} ${lancamento.valor}`
+            addElement(painel, "p", informacoesLancamento);
+        }
+
+        addElement(painel, "h4", "Saldo: " + mes.balancoDoMes.saldo);
+        addElement(painel, "hr");
+    }
+
+    app.appendChild(painel);
+}
+
+renderizar();
+renderizar();
