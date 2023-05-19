@@ -8,9 +8,35 @@
 </head>
 <body>
     <h3>Finanças Pessoais</h3>
-    <div id="app">
-        
-    </div>
+
+    <select id="mes">
+        <option value="" selected disabled>Mês</option>
+        <option value="janeiro">janeiro</option>
+        <option value="fevereiro">fevereiro</option>
+        <option value="março">março</option>
+        <option value="abril">abril</option>
+        <option value="maio">maio</option>
+        <option value="junho">junho</option>
+        <option value="julho">julho</option>
+        <option value="agosto">agosto</option>
+        <option value="setembro">setembro</option>
+        <option value="outubro">outubro</option>
+        <option value="novembro">novembro</option>
+        <option value="dezembro">dezembro</option>
+    </select>
+
+    <input type="text" id="categoria" placeholder="Categoria">
+
+    <select id="tipo">
+        <option disabled selected value="">Tipo</option>
+        <option value="receita">receita</option>
+        <option value="despesa">despesa</option>
+    </select>
+
+    <input type="number" id="valor" placeholder="Valor" min="0">
+    <button id="btn-add-lancamento">Adicionar Lançamento</button>
+
+    <div id="app"></div>
 
     <script src="utils.js"></script>
     <script src="lancamento.js"></script>

@@ -3,8 +3,12 @@ class Ano {
         this.meses = []
     }
 
-    adicionarMes (mes) {
-        this.meses.push(mes);
+    adicionarMes (novoMes) {
+        for (const mes of this.meses) {
+            if (novoMes.nome === mes.nome) throw new Error ("Mês inválido: mês já existe.");
+        }
+
+        this.meses.push(novoMes);
     }
 
     calcularSaldo() {
