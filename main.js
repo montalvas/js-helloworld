@@ -62,6 +62,29 @@ function renderizar() {
     if (app.firstChild) app.firstChild.remove();
 
     const painel = document.createElement("div");
+
+    const grafico = document.createElement("div");
+    grafico.className = "grafico";
+    const cores = ["blue", "green", "red"];
+
+    for (mes of ano.meses) {
+        const coluna = document.createElement("div");
+        coluna.className = "grafico-coluna";
+
+        const colunaCor = document.createElement("div");
+        colunaCor.style.backgroundColor = cores.pop();
+        colunaCor.style.height = `${(mes.balancoDoMes.saldo * 100) / 1000}px`;
+
+        const colunaTexto = document.createElement("div");
+        colunaTexto.className = "grafico-coluna-texto"
+        colunaTexto.innerText = mes.nome;
+
+        coluna.appendChild(colunaCor);
+        coluna.appendChild(colunaTexto);
+        grafico.appendChild(coluna);
+    }
+
+    painel.appendChild(grafico);
     
     for (mes of ano.meses) {
         addElement(painel, "h4", mes.nome.toUpperCase());
@@ -73,7 +96,7 @@ function renderizar() {
             const linha = document.createElement("tr");
             addElement(linha, "td", lancamento.tipo);
             addElement(linha, "td", lancamento.categoria);
-            addElement(linha, "td", lancamento.valor);
+            addElement(linha, "td", formataValor(lancamento.valor));
 
             tabelaLancamentos.appendChild(linha);
         }
@@ -83,19 +106,19 @@ function renderizar() {
         const linhaJuros = document.createElement("tr");
         addElement(linhaJuros, "th", "Juros");
         linhaJuros.firstChild.colSpan = 2;
-        addElement(linhaJuros, "th", mes.balancoDoMes.juros);
+        addElement(linhaJuros, "th", formataValor(mes.balancoDoMes.juros));
         tabelaLancamentos.appendChild(linhaJuros);
 
         const linhaRendimentos = document.createElement("tr");
         addElement(linhaRendimentos, "th", "Rendimentos");
         linhaRendimentos.firstChild.colSpan = 2;
-        addElement(linhaRendimentos, "th", mes.balancoDoMes.rendimentos);
+        addElement(linhaRendimentos, "th", formataValor(mes.balancoDoMes.rendimentos));
         tabelaLancamentos.appendChild(linhaRendimentos);
 
         const linhaSaldo = document.createElement("tr");
         addElement(linhaSaldo, "th", "Saldo");
         linhaSaldo.firstChild.colSpan = 2;
-        addElement(linhaSaldo, "th", mes.balancoDoMes.saldo);
+        addElement(linhaSaldo, "th", formataValor(mes.balancoDoMes.saldo));
         tabelaLancamentos.appendChild(linhaSaldo);
     }
 
