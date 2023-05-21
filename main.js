@@ -48,6 +48,15 @@ function addElement(parent, elementType, text) {
     parent.appendChild(element);
 }
 
+function cabecalhoTabela() {
+    const linha = document.createElement("tr");
+    addElement(linha, "th", "Tipo");
+    addElement(linha, "th", "Categoria");
+    addElement(linha, "th", "Valor");
+
+    return linha
+}
+
 function renderizar() {
     const app = document.getElementById("app");
     if (app.firstChild) app.firstChild.remove();
@@ -57,13 +66,37 @@ function renderizar() {
     for (mes of ano.meses) {
         addElement(painel, "h4", mes.nome.toUpperCase());
 
+        const tabelaLancamentos = document.createElement("table");
+        tabelaLancamentos.appendChild(cabecalhoTabela());
+
         for (lancamento of mes.lancamentos) {
-            const informacoesLancamento = `${lancamento.tipo} ${lancamento.categoria} ${lancamento.valor}`
-            addElement(painel, "p", informacoesLancamento);
+            const linha = document.createElement("tr");
+            addElement(linha, "td", lancamento.tipo);
+            addElement(linha, "td", lancamento.categoria);
+            addElement(linha, "td", lancamento.valor);
+
+            tabelaLancamentos.appendChild(linha);
         }
 
-        addElement(painel, "h4", "Saldo: " + mes.balancoDoMes.saldo);
-        addElement(painel, "hr");
+        painel.appendChild(tabelaLancamentos);
+
+        const linhaJuros = document.createElement("tr");
+        addElement(linhaJuros, "th", "Juros");
+        linhaJuros.firstChild.colSpan = 2;
+        addElement(linhaJuros, "th", mes.balancoDoMes.juros);
+        tabelaLancamentos.appendChild(linhaJuros);
+
+        const linhaRendimentos = document.createElement("tr");
+        addElement(linhaRendimentos, "th", "Rendimentos");
+        linhaRendimentos.firstChild.colSpan = 2;
+        addElement(linhaRendimentos, "th", mes.balancoDoMes.rendimentos);
+        tabelaLancamentos.appendChild(linhaRendimentos);
+
+        const linhaSaldo = document.createElement("tr");
+        addElement(linhaSaldo, "th", "Saldo");
+        linhaSaldo.firstChild.colSpan = 2;
+        addElement(linhaSaldo, "th", mes.balancoDoMes.saldo);
+        tabelaLancamentos.appendChild(linhaSaldo);
     }
 
     app.appendChild(painel);
@@ -71,25 +104,15 @@ function renderizar() {
 
 renderizar();
 
-function recebeOuCriaMes(nomeMes) {
-    for (mes of ano.meses) {
-        if (mes.nome === nomeMes) return mes
-    }
-    
-    return new Mes(nomeMes);
-}
-
 function novoLancamento() {
     const nomeMes = document.getElementById("mes").value;
     const categoria = document.getElementById("categoria").value;
     const tipo = document.getElementById("tipo").value;
     const valor = Number(document.getElementById("valor").value);
 
-    const novoMes = recebeOuCriaMes(nomeMes);
-    novoMes.adicionarLancamento(new Lancamento(categoria, tipo, valor));
-
-    ano.adicionarMes(novoMes);
+    ano.adicionarLancamento(nomeMes, new Lancamento (categoria, tipo, valor));
     ano.calcularSaldo();
+    
     renderizar();
 
     document.getElementById("mes").value = "";
@@ -101,3 +124,9 @@ function novoLancamento() {
 const button = document.getElementById("btn-add-lancamento");
 button.addEventListener('click', novoLancamento);
 
+const selectMes = document.getElementById("mes");
+for (mes of ano.meses) {
+    const option = document.createElement("option");
+    option.text = mes.nome;
+    selectMes.add(option);
+}

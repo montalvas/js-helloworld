@@ -11,6 +11,15 @@ class Ano {
         this.meses.push(novoMes);
     }
 
+    adicionarLancamento(nomeMes, lancamento) {
+        for (mes of this.meses) {
+            if (nomeMes === mes.nome) {
+                mes.adicionarLancamento(lancamento);
+                break;
+            }
+        }
+    }
+
     calcularSaldo() {
         let saldoInicial = 0;
 
