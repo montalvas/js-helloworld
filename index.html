@@ -5,36 +5,84 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS</title>
+    <style>
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        input {
+            width: 100%;
+            height: 30px;
+            box-sizing: border-box;
+            padding: 5px;
+            text-indent: 5px;
+            font-size: 15px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        select {
+            width: 100%;
+            height: 30px;
+            padding: 5px;
+            text-indent: 5px;
+            font-size: 15px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-lancamento {
+            position: fixed;
+            width: 250px;
+            right: 30px;
+            padding: 8px;
+            border: 1px solid #3c3c3c;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            height: 30px;
+            background-color: #10174f;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+    </style>
 </head>
 <body>
     <h3>Finanças Pessoais</h3>
 
-    <select id="mes">
-        <option value="" selected disabled>Mês</option>
-        <option value="janeiro">janeiro</option>
-        <option value="fevereiro">fevereiro</option>
-        <option value="março">março</option>
-        <option value="abril">abril</option>
-        <option value="maio">maio</option>
-        <option value="junho">junho</option>
-        <option value="julho">julho</option>
-        <option value="agosto">agosto</option>
-        <option value="setembro">setembro</option>
-        <option value="outubro">outubro</option>
-        <option value="novembro">novembro</option>
-        <option value="dezembro">dezembro</option>
-    </select>
-
-    <input type="text" id="categoria" placeholder="Categoria">
-
-    <select id="tipo">
-        <option disabled selected value="">Tipo</option>
-        <option value="receita">receita</option>
-        <option value="despesa">despesa</option>
-    </select>
-
-    <input type="number" id="valor" placeholder="Valor" min="0">
-    <button id="btn-add-lancamento">Adicionar Lançamento</button>
+    <div class="form-lancamento">
+        <select id="mes">
+            <option value="" selected disabled>Mês</option>
+            <option value="janeiro">janeiro</option>
+            <option value="fevereiro">fevereiro</option>
+            <option value="março">março</option>
+            <option value="abril">abril</option>
+            <option value="maio">maio</option>
+            <option value="junho">junho</option>
+            <option value="julho">julho</option>
+            <option value="agosto">agosto</option>
+            <option value="setembro">setembro</option>
+            <option value="outubro">outubro</option>
+            <option value="novembro">novembro</option>
+            <option value="dezembro">dezembro</option>
+        </select>
+        <input type="text" id="categoria" placeholder="Categoria">
+        <select id="tipo">
+            <option disabled selected value="">Tipo</option>
+            <option value="receita">receita</option>
+            <option value="despesa">despesa</option>
+        </select>
+        <input type="number" id="valor" placeholder="Valor" min="0">
+        <button id="btn-add-lancamento">Adicionar Lançamento</button>
+    </div>
 
     <div id="app"></div>
 
