@@ -1,0 +1,93 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.app {
+    margin-inline: 30px;
+}
+
+.grafico {
+    width: 600px;
+    height: 200px;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.grafico-coluna {
+    width: 120px;
+}
+
+.grafico-coluna-texto {
+    text-align: center;
+}
+
+.form-lancamento {
+    position: fixed;
+    width: 250px;
+    right: 30px;
+    padding: 8px;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+}
+
+input {
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 5px;
+    text-indent: 5px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+select {
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    text-indent: 5px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    width: 100%;
+    height: 30px;
+    background-color: #10174f;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.tabela-lancamento {
+    width: 600px;
+}
+
+.tabela-lancamento, tr, td, th {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+.tabela-lancamento > tr > td, 
+.tabela-lancamento > tr > th {
+    width: 100px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tabela-lancamento > tr > th {
+    background-color: #ddd;
+}
+
+table > tr > td:nth-child(2), 
+table > tr > th:nth-child(2) {
+    width: 200px;
+}

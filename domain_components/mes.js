@@ -25,6 +25,10 @@ class Mes {
         this.lancamentos.push(lancamento)
     }
 
+    arredondar(valor) {
+        return Math.round(valor * 100) / 100;
+    }
+
     calcularSaldo() {
         this.balancoDoMes = {saldo: 0, rendimentos: 0, juros: 0, receitas: 0, despesas: 0, proporcaoDeGastos: []}
         this.balancoDoMes.saldo = this.saldoInicial;
@@ -50,7 +54,7 @@ class Mes {
 
         for (const lancamento of this.lancamentos) {
             if (lancamento.tipo === "despesa") {
-                const porcentagem = arredondar((lancamento.valor / this.balancoDoMes.despesas) * 100);
+                const porcentagem = this.arredondar((lancamento.valor / this.balancoDoMes.despesas) * 100);
                 lista.push({ categoria: lancamento.categoria, porcentagem });
             }
         }
@@ -61,22 +65,22 @@ class Mes {
     apurarRendimentos() {
         if (this.balancoDoMes.saldo > 0) {
             this.balancoDoMes.rendimentos = this.calcularRendimentos(this.balancoDoMes.saldo);
-            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo + this.balancoDoMes.rendimentos);
+            this.balancoDoMes.saldo = this.arredondar(this.balancoDoMes.saldo + this.balancoDoMes.rendimentos);
         }
     }
 
     calcularRendimentos(saldo) {
-        return arredondar(saldo *= 0.005);
+        return this.arredondar(saldo *= 0.005);
     }
 
     apurarJuros() {
         if (this.balancoDoMes.saldo < 0) {
             this.balancoDoMes.juros = this.calcularJuros(this.balancoDoMes.saldo);
-            this.balancoDoMes.saldo = arredondar(this.balancoDoMes.saldo - this.balancoDoMes.juros);
+            this.balancoDoMes.saldo = this.arredondar(this.balancoDoMes.saldo - this.balancoDoMes.juros);
         }
     }
 
     calcularJuros(saldo) {
-        return arredondar(saldo *= 0.1);
+        return this.arredondar(saldo *= 0.1);
     }
 }

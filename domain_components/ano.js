@@ -12,7 +12,7 @@ class Ano {
     }
 
     adicionarLancamento(nomeMes, lancamento) {
-        for (mes of this.meses) {
+        for (const mes of this.meses) {
             if (nomeMes === mes.nome) {
                 mes.adicionarLancamento(lancamento);
                 break;
