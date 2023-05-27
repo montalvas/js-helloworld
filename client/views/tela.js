@@ -1,39 +1,26 @@
 class Tela {
     constructor () {
-        // janeiro
-        const janeiro = new Mes("janeiro");
+        this.init();    
+    }
 
-        janeiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
-        janeiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1000));
-        janeiro.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
-        janeiro.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
-
-        // fevereiro
-        const fevereiro = new Mes("fevereiro");
-
-        fevereiro.adicionarLancamento(new Lancamento ("Salário", "receita", 3000));
-        fevereiro.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
-        fevereiro.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 250));
-        fevereiro.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
-
-        // março
-        const marco = new Mes("março");
-        marco.adicionarLancamento(new Lancamento ("Salário", "receita", 4000));
-        marco.adicionarLancamento(new Lancamento ("Aluguel", "despesa", 1200));
-        marco.adicionarLancamento(new Lancamento ("Conta de luz", "despesa", 200));
-        marco.adicionarLancamento(new Lancamento ("Conta de água", "despesa", 100));
+    async init () {
+        const response = await fetch("http://localhost:3000/api/lancamentos");
+        const lancamentos = await response.json();
 
         const ano = new Ano();
+        ano.adicionarMes(new Mes("janeiro"));
+        ano.adicionarMes(new Mes("fevereiro"));
+        ano.adicionarMes(new Mes("março"));
+        
+        for (const lancamento of lancamentos) {
+            ano.adicionarLancamento(lancamento.mes, new Lancamento (
+                lancamento.categoria, lancamento.tipo, lancamento.valor
+            ));
+        }
 
-        ano.adicionarMes(janeiro);
-        ano.adicionarMes(fevereiro);
-        ano.adicionarMes(marco);
         ano.calcularSaldo();
-
-        janeiro.adicionarLancamento(new Lancamento("escola", "despesa", 250));
-        ano.calcularSaldo();
-
         this.ano = ano;
+        this.renderizar();
     }
 
     novoLancamento() {
@@ -43,8 +30,21 @@ class Tela {
         const valor = Number(document.getElementById("valor").value);
     
         this.ano.adicionarLancamento(nomeMes, new Lancamento (categoria, tipo, valor));
+
+        fetch("http://localhost:3000/api/lancamentos", 
+        { 
+            method: "post", 
+            headers: {"content-type": "application/json"}, 
+            body: JSON.stringify
+            ({
+                mes: nomeMes,
+                categoria: categoria,
+                tipo: tipo,
+                valor: valor
+            }),
+        });
+
         this.ano.calcularSaldo();
-        
         this.renderizar();
     
         document.getElementById("categoria").value = "";
