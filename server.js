@@ -1,32 +1,22 @@
 const express = require("express");
+const pgp = require("pg-promise");
+
 const app = express();
 app.use(express.json());
 app.use("/", express.static("./client"));
 
-const lancamentos = [
-    { mes: "janeiro", categoria: "Salário", tipo: "receita", valor: 3000 },
-    { mes: "janeiro", categoria: "Aluguel", tipo: "despesa", valor: 1000 },
-    { mes: "janeiro", categoria: "Conta de luz", tipo: "despesa", valor: 200 },
-    { mes: "janeiro", categoria: "Conta de água", tipo: "despesa", valor: 100 },
-    { mes: "fevereiro", categoria: "Salário", tipo: "receita", valor: 3000 },
-    { mes: "fevereiro", categoria: "Aluguel", tipo: "despesa", valor: 1200 },
-    { mes: "fevereiro", categoria: "Conta de luz", tipo: "despesa", valor: 250 },
-    { mes: "fevereiro", categoria: "Conta de água", tipo: "despesa", valor: 100 },
-    { mes: "março", categoria: "Salário", tipo: "receita", valor: 4000 },
-    { mes: "março", categoria: "Aluguel", tipo: "despesa", valor: 1200 },
-    { mes: "março", categoria: "Conta de luz", tipo: "despesa", valor: 200 },
-    { mes: "março", categoria: "Conta de água", tipo: "despesa", valor: 100 },
-];
+const connection = pgp()("postgres://postgres:lucas1994@localhost:5432/financas_pessoais");
 
 // leitura
-app.get("/api/lancamentos", function (req, res) {
+app.get("/api/lancamentos", async function (req, res) {
+    const lancamentos = await connection.query("select * from financas_pessoais.lancamento", []);
     res.json(lancamentos);
 });
 
 // escrita
-app.post("/api/lancamentos", function (req, res) {
+app.post("/api/lancamentos", async function (req, res) {
     const lancamento = req.body;
-    lancamentos.push(lancamento);
+    await connection.query("insert into financas_pessoais.lancamento (mes, categoria, tipo, valor) values ($1, $2, $3, $4)", [lancamento.mes, lancamento.categoria, lancamento.tipo, lancamento.valor]);
     res.end();
 });
 
