@@ -14,7 +14,7 @@ class Tela {
         
         for (const lancamento of lancamentos) {
             ano.adicionarLancamento(lancamento.mes, new Lancamento (
-                lancamento.categoria, lancamento.tipo, parseFloat(lancamento.valor)
+                lancamento.categoria, lancamento.tipo, parseFloat(lancamento.valor), lancamento.idLancamento
             ));
         }
 
@@ -43,6 +43,17 @@ class Tela {
                 valor: valor
             }),
         });
+
+        this.ano.calcularSaldo();
+        this.renderizar();
+    
+        document.getElementById("categoria").value = "";
+        document.getElementById("valor").value = "";
+    }
+
+    deletarLancamento(idLancamento) {
+
+        fetch(`http://localhost:3000/api/lancamentos/${idLancamento}`, {method: "delete"});
 
         this.ano.calcularSaldo();
         this.renderizar();
@@ -100,15 +111,15 @@ class Tela {
             app.addChild(title.element);
     
             const tabelaLancamentos = new Tabela("tabela-lancamento");
-            tabelaLancamentos.addRow("th", ["Tipo", "Categoria", "Valor"]);
+            tabelaLancamentos.addRow("th", ["Id", "Tipo", "Categoria", "Valor"]);
     
             for (const lancamento of mes.lancamentos) {
-                tabelaLancamentos.addRow("td", [lancamento.tipo, lancamento.categoria, this.formataValor(lancamento.getValorTipo())]);
+                tabelaLancamentos.addRow("td", [lancamento.idLancamento, lancamento.tipo, lancamento.categoria, this.formataValor(lancamento.getValorTipo())]);
             }
     
-            tabelaLancamentos.addRow("th", ["", "Juros", this.formataValor(mes.balancoDoMes.juros)]);
-            tabelaLancamentos.addRow("th", ["", "Rendimentos", this.formataValor(mes.balancoDoMes.rendimentos)]);
-            tabelaLancamentos.addRow("th", ["", "Saldo", this.formataValor(mes.balancoDoMes.saldo)]);
+            tabelaLancamentos.addRow("th", ["", "Juros", "", this.formataValor(mes.balancoDoMes.juros)]);
+            tabelaLancamentos.addRow("th", ["", "Rendimentos", "", this.formataValor(mes.balancoDoMes.rendimentos)]);
+            tabelaLancamentos.addRow("th", ["", "Saldo", "", this.formataValor(mes.balancoDoMes.saldo)]);
             
             app.addChild(tabelaLancamentos.element);
         }
