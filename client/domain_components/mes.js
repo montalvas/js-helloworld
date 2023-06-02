@@ -3,10 +3,6 @@ class Mes {
     constructor(nome) {
         if (nome === "") throw new Error ("Mês inválido: nome do mês é obrigatório");
 
-        const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-        const mesValido = meses.find(mes => mes === nome.toLowerCase());
-        if (mesValido === undefined) throw new Error("Mês inválido: nome do mês não existe!");
-
         this.nome = nome;
         this.saldoInicial = 0;
         this.balancoDoMes = {

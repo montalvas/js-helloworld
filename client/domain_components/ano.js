@@ -12,12 +12,20 @@ class Ano {
     }
 
     adicionarLancamento(nomeMes, lancamento) {
+        if (!this.meses.some(mes => mes.nome === nomeMes)) {
+            this.adicionarMes(new Mes(nomeMes));
+        }
+
         for (const mes of this.meses) {
             if (nomeMes === mes.nome) {
                 mes.adicionarLancamento(lancamento);
                 break;
             }
         }
+    }
+
+    deletarLancamento(nomeMes, lancamento) {
+        const position = nomeMes.lancamentos.splice(nomeMes.lancamentos.indexOf(lancamento), 1);
     }
 
     calcularSaldo() {

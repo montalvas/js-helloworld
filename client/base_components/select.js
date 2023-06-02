@@ -9,4 +9,8 @@ class Select {
         option.innerText = text;
         this.element.appendChild(option);
     }
+
+    getValue() {
+        return this.element.value;
+    }
 }
